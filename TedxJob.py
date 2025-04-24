@@ -74,7 +74,7 @@ tedx_dataset_agg = tedx_dataset_main.join(tags_dataset_agg, tedx_dataset.id == t
 tedx_dataset_agg.printSchema()
 
 ## READ RELATED VIDEO DATASET
-related_video_dataset_path = "s3://tests3bucketgb/related_video.csv"
+related_video_dataset_path = "s3://tests3bucketgb/related_videos.csv"
 related_video_dataset = spark.read \
     .option("header", "true") \
     .option("quote", "\"") \
