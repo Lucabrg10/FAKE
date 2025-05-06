@@ -1,5 +1,5 @@
 ## READ FINAL TRANSCRIPTS DATASET
-transcripts_dataset_path = "s3://tedx-2025-data-ys-20250315/final_with_ttranscripts_10.csv"
+transcripts_dataset_path = "s3://tedx-2025-data-ys-20250315/final_with_transcripts_10.csv"
 
 transcripts_dataset = spark.read \
     .option("header", "true") \
