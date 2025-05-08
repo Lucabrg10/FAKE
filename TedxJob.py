@@ -103,6 +103,24 @@ tedx_dataset_final = tedx_dataset_agg.join(related_video_agg, tedx_dataset_agg._
 
 tedx_dataset_final.printSchema()
 
+## READ FINAL TRANSCRIPTS DATASET
+transcripts_dataset_path = "s3://tests3bucketgb/final_with_transcripts_10.csv"
+
+transcripts_dataset = spark.read \
+    .option("header", "true") \
+    .option("quote", "\"") \
+    .option("escape", "\"") \
+    .csv(transcripts_dataset_path)
+
+transcripts_dataset = transcripts_dataset.select(
+    col("id").alias("id_ref"),
+    col("transcript")
+)
+
+# JOIN TRANSCRIPTS WITH MAIN DATASET
+tedx_dataset_final = tedx_dataset_final.join(transcripts_dataset, tedx_dataset_final._id == transcripts_dataset.id_ref, "left") \
+    .drop("id_ref")
+
 # WRITE TO MONGODB
 write_mongo_options = {
     "connectionName": "TEDX",
