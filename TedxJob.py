@@ -81,6 +81,19 @@ related_video_dataset = spark.read \
     .option("escape", "\"") \
     .csv(related_video_dataset_path)
 
+# AGGIUNGIAMO L'ID CORRETTO AI RELATED VIDEOS BASANDOCI SULLO SLUG
+related_video_dataset = related_video_dataset.join(
+    tedx_dataset.select(col("id").alias("correct_id"), col("slug").alias("slug_ref")),
+    related_video_dataset.slug == col("slug_ref"),
+    "left"
+).drop("slug_ref")
+
+# SOSTITUIAMO L'ID ERRATO CON L'ID CORRETTO
+related_video_dataset = related_video_dataset.withColumn(
+    "related_id",
+    col("correct_id")
+).drop("correct_id")
+
 # AGGREGATE RELATED VIDEOS BY ID
 related_video_agg = related_video_dataset.groupBy(col("id").alias("id_ref")).agg(
     collect_list(
