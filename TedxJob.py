@@ -1,7 +1,7 @@
 import sys
 import json
 import pyspark
-from pyspark.sql.functions import col, collect_list, array_join, struct
+from pyspark.sql.functions import col, collect_list, array_join, struct, collect_set
 
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
@@ -94,9 +94,9 @@ related_video_dataset = related_video_dataset.withColumn(
     col("correct_id")
 ).drop("correct_id")
 
-# AGGREGATE RELATED VIDEOS BY ID
+# AGGREGATE RELATED VIDEOS BY ID (REMOVE DUPLICATES)
 related_video_agg = related_video_dataset.groupBy(col("id").alias("id_ref")).agg(
-    collect_list(
+    collect_set(
         struct(
             col("related_id").alias("relatedId"),
             col("slug"),
@@ -133,6 +133,17 @@ transcripts_dataset = transcripts_dataset.select(
 # JOIN TRANSCRIPTS WITH MAIN DATASET
 tedx_dataset_final = tedx_dataset_final.join(transcripts_dataset, tedx_dataset_final._id == transcripts_dataset.id_ref, "left") \
     .drop("id_ref")
+
+## READ IMAGES DATASET
+images_dataset_path = "s3://tests3bucketgb/images.csv"
+images_dataset = spark.read.option("header", "true").csv(images_dataset_path)
+
+# JOIN ON SLUG TO ADD IMAGE URL TO THE FINAL DATASET
+tedx_dataset_final = tedx_dataset_final.join(
+    images_dataset.select(col("slug").alias("slug_img"), col("url").alias("imageUrl")),
+    tedx_dataset_final.slug == col("slug_img"),
+    "left"
+).drop("slug_img")
 
 # WRITE TO MONGODB
 write_mongo_options = {
