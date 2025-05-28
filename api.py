@@ -91,9 +91,10 @@ def generate_fake_news(request: PromptRequest):
         return {"error": "Nessuna trascrizione trovata.","video": doc.get("title", "N/A")}
 
     prompt = (
-        f"Usa la seguente trascrizione di un talk per inventare una fake news credibile, "
-        f"distorcendo leggermente o esagerando i contenuti per renderla abbastanza veritiera. "
+        f"Usa la seguente trascrizione di un talk per creare una fake news credibile, "
+        f"distorcendo leggermente o esagerando i contenuti della trascrizione, così da rendere la fake-news abbastanza veritiera. "
         f"La fake news deve essere breve (massimo 2 righe), contenere un titolo, ed essere coerente con l'argomento scelto dall'utente.\n\n"
+        f"Non deve contenere caratteri speciali ma solo testo, la prima riga deve essere il titolo e a capo il testo della fake-news"
         f"Trascrizione del talk:\n{transcript}\n\n"
         f"Argomento scelto dall'utente: {query_text}"
     )
@@ -104,13 +105,19 @@ def generate_fake_news(request: PromptRequest):
             messages=[{"role": "user", "content": prompt}],
             temperature=0.9,
         )
-        fake_news = response.choices[0].message.content
+        full_fake_news  = response.choices[0].message.content
     except Exception as e:
         return {"error": f"Errore chiamata OpenAI: {str(e)}"}
+    # Splitta in titolo + testo: la prima riga è il titolo, le altre sono il contenuto
+    lines = full_fake_news.split("\n")
+    fake_news_title = lines[0].strip()
+    fake_news_text = " ".join(line.strip() for line in lines[1:]).strip()
 
     return {
         "video_title": doc.get("title", "N/A"),
         "video_speaker": doc.get("speakers", "N/A"),
         "video_url": doc.get("url", "N/A"),
-        "fake_news": fake_news
+        "video_image": doc.get("imageUrl", "N/A"),  # Cambia nome campo se diverso
+        "fake_news_title": fake_news_title,
+        "fake_news_text": fake_news_text
     }
