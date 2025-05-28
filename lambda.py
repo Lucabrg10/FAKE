@@ -22,7 +22,7 @@ def lambda_handler(event, context):
         }
 
     # URL della tua API FastAPI sulla EC2
-    api_url = "http://3.90.186.56:8000/fake-news"
+    api_url = "http://107.20.219.107:8000/fake-news"
 
     payload = {
         "text": prompt,
