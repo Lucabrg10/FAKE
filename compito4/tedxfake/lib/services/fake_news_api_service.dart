@@ -6,11 +6,14 @@ import '../data/models/post.dart';
 class FakeNewsApiService {
   Future<Post> generateFakePost(String prompt) async {
     final response = await http.post(
-      Uri.parse('https://api.example.com/generate'),
+      Uri.parse(
+        'https://ednqv8z8jb.execute-api.us-east-1.amazonaws.com/default/match_video_from_prompt',
+      ),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'prompt': prompt}),
     );
-
+    print('STATUS: ${response.statusCode}');
+    print('BODY: ${response.body}'); // 👈 stampa la risposta JSON qui
     if (response.statusCode == 200) {
       return Post.fromJson(jsonDecode(response.body));
     } else {

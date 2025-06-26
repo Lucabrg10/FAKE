@@ -16,10 +16,10 @@ class Post {
   /// Factory per creare Post da JSON (es: da API)
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      title: json['title'] ?? '',
-      text: json['text'] ?? '',
-      author: json['author'] ?? '',
-      imageUrl: json['image'] ?? '',
+      title: json['fake_news_title'] ?? '',
+      text: json['fake_news_text'] ?? '',
+      author: json['video_speaker'] ?? '',
+      imageUrl: json['video_image'] ?? '',
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
     );
   }
