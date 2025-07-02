@@ -13,7 +13,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TedXFAKE',
-      theme: ThemeData(primarySwatch: Colors.red),
+      theme: ThemeData(
+        useMaterial3:
+            true, // Consigliato per i nuovi widget con supporto a Material 3
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+          brightness: Brightness.light, // O Brightness.dark per tema scuro
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.red,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.black, // Sfondo nero
+          titleTextStyle: TextStyle(
+            color: Colors.white, // Testo bianco
+            fontWeight: FontWeight.bold, // Grassetto
+            fontSize: 20,
+          ),
+          iconTheme: IconThemeData(color: Colors.white), // Icone bianche
+        ),
+      ),
       home: HomeScreen(),
     );
   }
@@ -40,6 +58,17 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (i) => setState(() => _index = i),
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.red,
+        unselectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.red,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.normal,
+          color: Colors.white,
+        ),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
           BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Generate'),

@@ -7,7 +7,7 @@ class FakeNewsApiService {
   Future<Post> generateFakePost(String prompt) async {
     final response = await http.post(
       Uri.parse(
-        'https://ednqv8z8jb.execute-api.us-east-1.amazonaws.com/default/match_video_from_prompt',
+        'https://mw8w3naup5.execute-api.us-east-1.amazonaws.com/default/lambdaFakeNews',
       ),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'prompt': prompt}),

@@ -23,6 +23,16 @@ class Post {
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
     );
   }
+    factory Post.fromJsonDB(Map<String, dynamic> json) {
+    return Post(
+      title: json['title'] ?? '',
+      text: json['text'] ?? '',
+      author: json['author'] ?? '',
+      imageUrl: json['image'] ?? '',
+      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+    );
+  }
+
 
   /// Converte Post in JSON (es: per salvataggio locale)
   Map<String, dynamic> toJson() => {

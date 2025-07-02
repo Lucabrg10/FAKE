@@ -2,7 +2,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/fake_news_api_service.dart';
 import '../data/models/post.dart';
-
+import './post_fetch_providers.dart';
 final apiServiceProvider = Provider((ref) => FakeNewsApiService());
 
 final generatedPostProvider =
@@ -22,8 +22,13 @@ class PostGeneratorNotifier extends AsyncNotifier<Post?> {
     try {
       final post = await api.generateFakePost(prompt);
       state = AsyncData(post); // Stato aggiornato con dati
+      ref.invalidate(postsProvider);
+
     } catch (e, st) {
       state = AsyncError(e, st); // Stato aggiornato con errore
     }
+  }
+   void reset() {
+    state = const AsyncData(null);
   }
 }
