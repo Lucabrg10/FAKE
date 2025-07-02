@@ -111,17 +111,4 @@ class GeneratorScreen extends ConsumerWidget {
     );
   }
 
-  Future<bool> savePost(post) async {
-    // TODO: Implementa chiamata API per salvare post su MongoDB
-    // Esempio:
-    // final response = await http.post(
-    //   Uri.parse('https://tuo-api-url.com/savePost'),
-    //   body: jsonEncode(post.toJson()),
-    //   headers: {'Content-Type': 'application/json'},
-    // );
-    // return response.statusCode == 200;
-
-    await Future.delayed(Duration(seconds: 1)); // simula delay
-    return true; // per ora finta riuscita
-  }
 }
