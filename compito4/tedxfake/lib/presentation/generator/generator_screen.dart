@@ -56,9 +56,7 @@ class GeneratorScreen extends ConsumerWidget {
                                           postNotifier.reset();
                                           promptController.clear();
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                        ),
+                                       
                                         child: Text('Cancella'),
                                       ),
                                     ),
